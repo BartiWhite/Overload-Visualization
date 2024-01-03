@@ -12,17 +12,25 @@ public class Application implements Runnable{
 
     @Override
     public void run() {
+        int i = 0;
+        int sum = 0;
+        Simulation.initSimulation(2, 4);
         while (Parameters.isOn) {
+            i++;
+
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            runSimulation();
+
+            Simulation.initClassifiers(2, 4);
+            sum += Simulation.simulate();
+            runSimulation((double) sum /i);
         }
     }
 
-    private void runSimulation() {
-        overloadChart.updateSeries(1);
+    private void runSimulation(double average) {
+        overloadChart.updateSeries(average);
     }
 }

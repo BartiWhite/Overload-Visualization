@@ -1,40 +1,44 @@
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
 
-public class OverloadChart extends JPanel {
+public class OverloadChart extends ChartPanel {
 
-    private final XYSeries series;
+    private final XYSeries simulationSeries;
+    private final XYSeries theoreticalSeries;
     private int time = 0;
 
     public OverloadChart() {
-        series = new XYSeries("Overload", true, true);
-        XYSeriesCollection collection = new XYSeriesCollection(series);
-        JFreeChart chart = ChartFactory.createXYLineChart("", // title
+        super(ChartFactory.createXYLineChart("", // title
                 "time", // OX axis
-                "opinion", // OY axis
-                collection, // database
+                "overload probability", // OY axis
+                new XYSeriesCollection(), // database
                 PlotOrientation.VERTICAL, // orientation
                 true, // legend
                 false, // tooltips
-                false); // urls
-        ChartPanel chartPanel = new ChartPanel(chart);
-
-        this.add(chartPanel);
+                false)); // urls);
+        XYSeriesCollection collection =  (XYSeriesCollection) super.getChart().getXYPlot().getDataset(0);
+        simulationSeries = new XYSeries("Simulation", true, true);
+        theoreticalSeries = new XYSeries("Theory value", true, true);
+        collection.addSeries(simulationSeries);
+        collection.addSeries(theoreticalSeries);
     }
 
-    protected void updateSeries(float value) {
-        series.add(time, value);
+    protected void updateSeries(double value) {
+        simulationSeries.add(time, value);
+        theoreticalSeries.add(time, Simulation.theoreticalValue);
         time++;
     }
 
     protected void reset() {
         time = 0;
-        series.clear();
+        simulationSeries.clear();
+        theoreticalSeries.clear();
     }
 }
