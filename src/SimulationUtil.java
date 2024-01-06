@@ -58,9 +58,7 @@ public class SimulationUtil {
         List<Integer> outputs = new ArrayList<>(drawingRange);
 
         for (int i = 0; i < nrOfClassifiers; i++) {
-            int randomInt = random.nextInt(drawingRange);
-
-            outputs.add(randomInt);
+            outputs.add(random.nextInt(drawingRange));
         }
 
         for (int i = 0; i < nrOfClassifiers; i++) {

@@ -1,36 +1,42 @@
-public class Application implements Runnable{
-    private final GraphicFrame graphicFrame;
+public class Application extends Parameters implements Runnable {
     private final OverloadChart overloadChart;
     private final ControlPanel controlPanel;
 
     public Application() {
-        this.overloadChart = new OverloadChart();
-        this.controlPanel = new ControlPanel();
-        this.graphicFrame = new GraphicFrame(controlPanel, overloadChart);
+        overloadChart = new OverloadChart();
+        controlPanel = new ControlPanel(overloadChart);
+        GraphicFrame graphicFrame = new GraphicFrame(controlPanel, overloadChart);
         graphicFrame.setVisible(true);
     }
 
     @Override
     public void run() {
-        int i = 0;
-        int sum = 0;
         Simulation.initSimulation(2, 4);
         while (Parameters.isOn) {
-            i++;
+
+            while (Parameters.isRunning) {
+                iteration++;
+
+                Simulation.updateClassifiers();
+                sum += Simulation.simulate();
+                if (Parameters.isRunning) {
+                    double average = (double) sum/iteration;
+                    overloadChart.updateSeries(average);
+                    controlPanel.updateAverageLabel(average);
+                }
+
+                try {
+                    Thread.sleep(1000/Parameters.speed);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-
-            Simulation.initClassifiers(2, 4);
-            sum += Simulation.simulate();
-            runSimulation((double) sum /i);
         }
-    }
-
-    private void runSimulation(double average) {
-        overloadChart.updateSeries(average);
     }
 }

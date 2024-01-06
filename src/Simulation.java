@@ -10,9 +10,9 @@ public class Simulation extends SimulationUtil {
     protected static void initSimulation(int length, int nrOfClassifiers) {
         Simulation.length = length;
         Simulation.nrOfClassifiers = nrOfClassifiers;
-        iterationBoundary = Math.max(nrOfClassifiers, (int) Math.pow(2, length));
+        iterationBoundary = nrOfClassifiers;
         theoreticalValue = calculateTheory();
-        initClassifiers(nrOfClassifiers, length);
+        initClassifiers(length, nrOfClassifiers);
     }
 
     protected static double calculateTheory() {
@@ -78,5 +78,12 @@ public class Simulation extends SimulationUtil {
         }
 
         return 0;
+    }
+
+    protected static void updateClassifiers() {
+        for (Classifier classifier : classifiers) {
+            classifier.setInput(getRandomInput(length));
+            classifier.setOutput(getRandomOutput(length));
+        }
     }
 }

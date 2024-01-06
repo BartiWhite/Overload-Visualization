@@ -3,7 +3,7 @@ import java.util.Random;
 public class Classifier {
     private final int length;
     private int[] input;
-    private final int[] output;
+    private int[] output;
 
     private final Random random = new Random();
 
@@ -39,6 +39,10 @@ public class Classifier {
 
     public int[] getOutput() {
         return output;
+    }
+
+    public void setOutput(int[] output) {
+        this.output = output;
     }
 
     public void setInput(int[] input) {
