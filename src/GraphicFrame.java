@@ -9,8 +9,8 @@ public class GraphicFrame extends JFrame {
     public GraphicFrame(ControlPanel controlPanel, OverloadChart overloadChart) {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setTitle("Overload Simulation");
-        this.setSize(800, 630);
-        this.setMinimumSize(new Dimension(800, 600));
+        this.setSize(800, 660);
+        this.setMinimumSize(new Dimension(800, 660));
         this.setLayout(new BorderLayout());
 
         this.addWindowListener(new WindowAdapter() {
